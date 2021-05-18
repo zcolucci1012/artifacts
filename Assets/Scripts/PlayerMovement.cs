@@ -20,6 +20,10 @@ public class PlayerMovement : MonoBehaviour
         float dy = Input.GetAxisRaw("Vertical");
 
         this.GetComponent<Rigidbody2D>().velocity = (new Vector2(dx, dy)).normalized * SPEED;
-
+        if (dx != 0)
+        {
+            this.transform.localScale = new Vector3(dx, 1, 1);
+        }
+        
     }
 }
