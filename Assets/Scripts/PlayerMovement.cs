@@ -20,10 +20,7 @@ public class PlayerMovement : MonoBehaviour
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        if (movement.x != 0)
-        {
-            this.transform.localScale = new Vector3(Mathf.Sign(movement.x), 1, 1);
-        }
+        
         
     }
 
