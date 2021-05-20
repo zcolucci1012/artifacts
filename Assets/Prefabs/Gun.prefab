@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FIRE_RATE: 10
-  BULLET_FORCE: 400
+  BULLET_FORCE: 800
   bullet: {fileID: 9220362986028885193, guid: 80e80ec20d11bf949816217c46fd7c5b, type: 3}
   bulletHole: {fileID: 4053349739798094067}
 --- !u!1 &4053349739798094067
