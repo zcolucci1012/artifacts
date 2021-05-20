@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-
-    public float SPEED = 5f;
+    public float SPEED = 7.5f;
+    private Vector2 movement;
+    private float friction = 0.25f;
 
     // Start is called before the first frame update
     void Start()
@@ -16,14 +17,24 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float dx = Input.GetAxisRaw("Horizontal");
-        float dy = Input.GetAxisRaw("Vertical");
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
 
-        this.GetComponent<Rigidbody2D>().velocity = (new Vector2(dx, dy)).normalized * SPEED;
-        if (dx != 0)
+        if (movement.x != 0)
         {
-            this.transform.localScale = new Vector3(dx, 1, 1);
+            this.transform.localScale = new Vector3(Mathf.Sign(movement.x), 1, 1);
         }
         
+    }
+
+    void FixedUpdate()
+    {
+        Vector2 vel = new Vector2(Mathf.Lerp(this.GetComponent<Rigidbody2D>().velocity.x, movement.x * SPEED, friction),
+            Mathf.Lerp(this.GetComponent<Rigidbody2D>().velocity.y, movement.y * SPEED, friction));
+        if (vel.magnitude > SPEED)
+        {
+            vel = vel.normalized * SPEED;
+        }
+        this.GetComponent<Rigidbody2D>().velocity = vel;
     }
 }
