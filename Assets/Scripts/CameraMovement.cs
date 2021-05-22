@@ -19,7 +19,6 @@ public class CameraMovement : MonoBehaviour
         Vector2 finalPosition = player.transform.position;
         Vector2 lerpPosition = Vector2.Lerp(this.transform.parent.position, finalPosition, cameraSpeed);
         this.transform.parent.position = new Vector3(lerpPosition.x, lerpPosition.y, -10);
-        print(lerpPosition);
     }
 
     public void Shake()

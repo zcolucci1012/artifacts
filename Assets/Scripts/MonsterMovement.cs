@@ -10,11 +10,13 @@ public class MonsterMovement : MonoBehaviour
 
     private Vector2 movement;
     private float friction = 0.25f;
+    private int dir = 1;
    
     private bool action = false;
     private int actionTick = 0;
 
     private bool slashing;
+    private int SLASH_TICKS = 20;
 
     // Start is called before the first frame update
     void Start()
@@ -27,10 +29,11 @@ public class MonsterMovement : MonoBehaviour
     {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
-
-        if (movement.x != 0)
+        
+        if (movement.x != 0 && !action)
         {
-            this.transform.localScale = new Vector3(Mathf.Sign(movement.x), 1, 1);
+            dir = (int)Mathf.Sign(movement.x);
+            this.transform.localScale = new Vector3(dir, 1, 1);
         }
 
         if (action || actionTick > 0)
@@ -41,7 +44,7 @@ public class MonsterMovement : MonoBehaviour
         {
             action = true;
             slashing = true;
-            actionTick = 50;
+            actionTick = SLASH_TICKS;
         }
         else if (Input.GetButtonDown("Ability1"))
         {
@@ -75,7 +78,30 @@ public class MonsterMovement : MonoBehaviour
 
         if (slashing)
         {
+            int frame = SLASH_TICKS - actionTick + 1;
+            if (frame == 4)
+            {
+                this.khopesh.GetComponent<Collider2D>().enabled = true;
+            }
+            else if (frame > 6 && frame <= 8)
+            {
+                this.hand.transform.eulerAngles += new Vector3(0, 0, -25f * dir);
+            } else if (frame > 10 && frame <= 12)
+            {
+                this.hand.transform.eulerAngles += new Vector3(0, 0, 25f * dir);
+            } else if (frame > 13)
+            {
+                this.khopesh.GetComponent<Collider2D>().enabled = false;
+            }
+        }
 
+        if (action)
+        {
+            actionTick--;
+            if (actionTick == 0)
+            {
+                action = false;
+            }
         }
     }
 }
