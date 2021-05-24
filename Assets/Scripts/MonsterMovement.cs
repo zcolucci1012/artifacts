@@ -7,10 +7,11 @@ public class MonsterMovement : MonoBehaviour
     public float SPEED = 7.5f;
     public GameObject khopesh;
     public GameObject hand;
+    public Animator anim;
+    public Camera cam;
 
     private Vector2 movement;
     private float friction = 0.25f;
-    private int dir = 1;
    
     private bool action = false;
     private int actionTick = 0;
@@ -29,22 +30,18 @@ public class MonsterMovement : MonoBehaviour
     {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
-        
-        if (movement.x != 0 && !action)
+
+        Vector2 m = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        Vector2 dir = m - (Vector2)cam.WorldToScreenPoint(this.transform.position);
+
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("idle"))
         {
-            dir = (int)Mathf.Sign(movement.x);
-            this.transform.localScale = new Vector3(dir, 1, 1);
+            this.transform.localScale = new Vector3(Mathf.Sign(dir.x), 1, 1);
         }
 
-        if (action || actionTick > 0)
+        if (Input.GetButtonDown("Fire1"))
         {
-
-        }
-        else if (Input.GetButtonDown("Fire1"))
-        {
-            action = true;
-            slashing = true;
-            actionTick = SLASH_TICKS;
+            anim.SetTrigger("slash");
         }
         else if (Input.GetButtonDown("Ability1"))
         {
@@ -75,7 +72,8 @@ public class MonsterMovement : MonoBehaviour
             vel = vel.normalized * SPEED;
         }
         this.GetComponent<Rigidbody2D>().velocity = vel;
-
+        
+        /*
         if (slashing)
         {
             int frame = SLASH_TICKS - actionTick + 1;
@@ -94,6 +92,7 @@ public class MonsterMovement : MonoBehaviour
                 this.khopesh.GetComponent<Collider2D>().enabled = false;
             }
         }
+        */
 
         if (action)
         {
